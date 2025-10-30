@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: oasis
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build: .
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/oasis
+      JWT_SECRET: supersecretjwt
+      JWT_EXPIRES_IN: 3600s
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      STRIPE_SECRET_KEY: sk_test_xxx
+      STRIPE_WEBHOOK_SECRET: whsec_xxx
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    command: ["node", "dist/main.js"]
+
+volumes:
+  db-data:
+
+
