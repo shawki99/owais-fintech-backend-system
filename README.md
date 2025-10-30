@@ -1,6 +1,6 @@
-# Oasis Backend
+# Owais Fintech Backend
 
-Backend Engineer Take-Home Challenge (NestJS)
+
 
 ## Requirements
 - Node 20+
